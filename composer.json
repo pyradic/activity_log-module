@@ -1,0 +1,19 @@
+{
+    "name": "pyro/activity_log-module",
+    "type": "streams-addon",
+    "description": "",
+    "license": "MIT",
+    "require": {
+        "spatie/laravel-activitylog": "~3.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pyro\\ActivityLogModule\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pyro\\ActivityLogModule\\Tests\\": "tests/"
+        }
+    }
+}
