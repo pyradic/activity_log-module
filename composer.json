@@ -4,9 +4,11 @@
     "description": "",
     "license": "MIT",
     "require": {
-        "spatie/laravel-activitylog": "~3.9"
     },
     "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
         "psr-4": {
             "Pyro\\ActivityLogModule\\": "src/"
         }

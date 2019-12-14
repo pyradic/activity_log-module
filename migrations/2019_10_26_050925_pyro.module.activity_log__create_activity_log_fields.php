@@ -11,14 +11,14 @@ class PyroModuleActivityLogCreateActivityLogFields extends Migration
      * @var array
      */
     protected $fields = [
-        'name' => 'anomaly.field_type.text',
-        'slug' => [
-            'type' => 'anomaly.field_type.slug',
-            'config' => [
-                'slugify' => 'name',
-                'type' => '_'
-            ],
-        ],
+        'log_name'     => 'anomaly.field_type.text',
+        'description'  => 'anomaly.field_type.textarea', //text
+        'subject_id'   => 'anomaly.field_type.integer', //unsignedBigInteger
+        'subject_type' => 'anomaly.field_type.text', //string
+        'causer_id'    => 'anomaly.field_type.integer', //unsignedBigInteger
+        'causer_type'  => 'anomaly.field_type.text', //string
+        'properties'   => 'anomaly.field_type.textarea', //json
     ];
+
 
 }

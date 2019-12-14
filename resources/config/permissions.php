@@ -1,3 +1,9 @@
 <?php
 
-return [];
+return [
+    'activity' => [
+        'read',
+        'write',
+        'delete',
+    ],
+];
