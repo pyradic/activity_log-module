@@ -7,6 +7,10 @@ use Pyro\Platform\Entry\EntryModel;
  * 
  *
  * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
+ * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
+ * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
+ * @mixin  \Pyro\ActivityLogModule\Activity\ActivityModel
+ * @property  \Pyro\ActivityLogModule\Activity\ActivityModel $object
  */
 class ActivityPresenter extends EntryPresenter
 {
