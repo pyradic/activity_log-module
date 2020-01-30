@@ -1,54 +1,33 @@
 <?php namespace Pyro\ActivityLogModule\Activity;
 
 use Anomaly\Streams\Platform\Entry\EntryPresenter;
+use Anomaly\UsersModule\User\Contract\UserInterface;
 use Pyro\Platform\Entry\EntryModel;
 
 /**
  * 
  *
  * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
  * @property  \Pyro\ActivityLogModule\Activity\ActivityModel $object
  */
 class ActivityPresenter extends EntryPresenter
 {
-    public function userEmail()
+    public function createdByUser()
     {
-
-//        /** @var \Anomaly\UsersModule\User\Contract\UserInterface $user */
-//        $user=$this->causer->first();
-//        if(!$user instanceof UserInterface){
-//            return '';
-//        }
-        return (string)$this->createdBy->email;
+        $this->load('created_by');
+        $user = $this->created_by;
+        if ( ! $user instanceof UserInterface) {
+            return '';
+        }
+        $html="<a href='/admin/users/edit/{$user->id}'>{$user->username}</a>";
+        return $html;
     }
 
     public function causerTitle()
     {
         $title = '';
         if ($titleColumn = $this->getTitleColumn($this->causer_type)) {
-            $title = $this->causer->first()->{$titleColumn};
+            $title = $this->causer->{$titleColumn};
         }
         return $title;
     }
@@ -70,7 +49,7 @@ class ActivityPresenter extends EntryPresenter
     {
         $title = '';
         if ($titleColumn = $this->getTitleColumn($this->subject_type)) {
-            $title = $this->subject->first()->{$titleColumn};
+            $title = $this->subject->first()->getAttribute($titleColumn);
         }
         return $title;
     }

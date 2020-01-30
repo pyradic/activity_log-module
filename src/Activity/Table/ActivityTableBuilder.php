@@ -5,63 +5,19 @@ use Anomaly\Streams\Platform\Ui\Table\TableBuilder;
 class ActivityTableBuilder extends TableBuilder
 {
 
-    /**
-     * The table views.
-     *
-     * @var array|string
-     */
-    protected $views = [];
-
-    /**
-     * The table filters.
-     *
-     * @var array|string
-     */
-    protected $filters = [];
-
-    /**
-     * The table columns.
-     *
-     * @var array|string
-     */
-    protected $columns = [
-        'user' => 'entry.userEmail',
+    protected $filters = [
         'description',
-        'created_at' => 'entry.created_at',
-        'causer' => 'entry.causerTitle',
-        'subject' => 'entry.subjectTitle'
+        'created_by_id',
     ];
 
-    /**
-     * The table buttons.
-     *
-     * @var array|string
-     */
     protected $buttons = [
-        'edit'
+        'edit',
     ];
 
-    /**
-     * The table actions.
-     *
-     * @var array|string
-     */
     protected $actions = [
-        'delete'
+        'delete',
     ];
 
-    /**
-     * The table options.
-     *
-     * @var array
-     */
     protected $options = [];
-
-    /**
-     * The table assets.
-     *
-     * @var array
-     */
-    protected $assets = [];
 
 }

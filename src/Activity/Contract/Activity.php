@@ -4,14 +4,13 @@ namespace Pyro\ActivityLogModule\Activity\Contract;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Collection;
 
 interface Activity
 {
-    public function subject(): MorphTo;
+    public function subject();
 
-    public function causer(): MorphTo;
+    public function causer();
 
     public function getExtraProperty(string $propertyName);
 

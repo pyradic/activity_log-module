@@ -3,16 +3,11 @@
 use Anomaly\Streams\Platform\Model\ActivityLog\ActivityLogActivityEntryModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Pyro\ActivityLogModule\Activity\Contract\Activity;
 use Pyro\ActivityLogModule\Activity\Contract\ActivityInterface;
 
-/**
- *
- *
- */
 /**
  * Pyro\ActivityLogModule\Activity\ActivityModel
  *
@@ -33,12 +28,14 @@ use Pyro\ActivityLogModule\Activity\Contract\ActivityInterface;
  * @property int|null $actions_count
  * @property \Pyro\ActivityLogModule\Activity\ActivityCollection|\Pyro\ActivityLogModule\Activity\ActivityModel[] $activityLogs
  * @property int|null $activity_logs_count
- * @property \Pyro\ActivityLogModule\Activity\ActivityModel|null $causer
+ * @property \Illuminate\Database\Eloquent\Model|\Eloquent $causer
  * @property \Anomaly\UsersModule\User\UserModel|null $createdBy
+ * @property \Anomaly\UsersModule\User\UserModel|null $created_by
  * @property mixed $changes
  * @property mixed|null $raw
- * @property \Pyro\ActivityLogModule\Activity\ActivityModel|null $subject
+ * @property \Illuminate\Database\Eloquent\Model|\Eloquent $subject
  * @property \Anomaly\UsersModule\User\UserModel|null $updatedBy
+ * @property \Anomaly\UsersModule\User\UserModel|null $updated_by
  * @property \Anomaly\Streams\Platform\Version\VersionCollection|\Anomaly\Streams\Platform\Version\VersionModel[] $versions
  * @property int|null $versions_count
  * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel causedBy(\Illuminate\Database\Eloquent\Model $causer)
@@ -74,7 +71,7 @@ class ActivityModel extends ActivityLogActivityEntryModel implements ActivityInt
 
     protected $enableLoggingModelsEvents = false;
 
-    public function subject(): MorphTo
+    public function subject()
     {
         if (config('pyro.module.activity_log::config.subject_returns_soft_deleted_models')) {
             return $this->morphTo()->withTrashed();
@@ -83,7 +80,7 @@ class ActivityModel extends ActivityLogActivityEntryModel implements ActivityInt
         return $this->morphTo();
     }
 
-    public function causer(): MorphTo
+    public function causer()
     {
         return $this->morphTo();
     }
