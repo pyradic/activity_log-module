@@ -22,7 +22,7 @@ class ActivityLogModule extends Module
      *
      * @var string
      */
-    protected $icon = 'fa fa-puzzle-piece';
+    protected $icon = 'traffic-light';
 
     /**
      * The module sections.
