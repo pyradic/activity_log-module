@@ -5,6 +5,7 @@ use Anomaly\Streams\Platform\Entry\Contract\EntryRepositoryInterface;
 /**
  * 
  *
+ * @mixin \Pyro\ActivityLogModule\Activity\ActivityRepository
  */
 interface ActivityRepositoryInterface extends EntryRepositoryInterface
 {
