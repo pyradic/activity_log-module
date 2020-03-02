@@ -62,6 +62,7 @@ use Pyro\ActivityLogModule\Activity\Contract\ActivityInterface;
  * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereUpdatedById($value)
  * @mixin \Eloquent
+ * @method \Pyro\ActivityLogModule\Activity\ActivityPresenter getPresenter()
  */
 class ActivityModel extends ActivityLogActivityEntryModel implements ActivityInterface, Activity
 {
