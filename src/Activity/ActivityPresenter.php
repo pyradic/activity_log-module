@@ -9,6 +9,13 @@ use Pyro\Platform\Entry\EntryModel;
  *
  * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
  * @property \Pyro\ActivityLogModule\Activity\ActivityModel $object
+ * @property \Anomaly\TextFieldType\TextFieldTypePresenter $log_name
+ * @property \Anomaly\TextareaFieldType\TextareaFieldTypePresenter $description
+ * @property \Anomaly\IntegerFieldType\IntegerFieldTypePresenter $subject_id
+ * @property \Anomaly\TextFieldType\TextFieldTypePresenter $subject_type
+ * @property \Anomaly\IntegerFieldType\IntegerFieldTypePresenter $causer_id
+ * @property \Anomaly\TextFieldType\TextFieldTypePresenter $causer_type
+ * @property \Anomaly\TextareaFieldType\TextareaFieldTypePresenter $properties
  */
 class ActivityPresenter extends EntryPresenter
 {

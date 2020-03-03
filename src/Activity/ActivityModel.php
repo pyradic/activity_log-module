@@ -63,6 +63,9 @@ use Pyro\ActivityLogModule\Activity\Contract\ActivityInterface;
  * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereUpdatedById($value)
  * @mixin \Eloquent
  * @method \Pyro\ActivityLogModule\Activity\ActivityPresenter getPresenter()
+ * @method \Pyro\ActivityLogModule\Activity\ActivityCollection newCollection()
+ * @method \Anomaly\Streams\Platform\Entry\EntryRouter newRouter()
+ * @method \Anomaly\Streams\Platform\Entry\EntryQueryBuilder newEloquentBuilder()
  */
 class ActivityModel extends ActivityLogActivityEntryModel implements ActivityInterface, Activity
 {
