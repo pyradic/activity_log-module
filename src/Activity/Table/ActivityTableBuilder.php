@@ -2,6 +2,10 @@
 
 use Anomaly\Streams\Platform\Ui\Table\TableBuilder;
 
+/**
+ * 
+ *
+ */
 class ActivityTableBuilder extends TableBuilder
 {
 

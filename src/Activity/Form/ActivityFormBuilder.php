@@ -2,6 +2,13 @@
 
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 
+/**
+ * 
+ *
+ * @method \Pyro\ActivityLogModule\Activity\Contract\ActivityInterface getFormEntry()
+ * @method \Pyro\ActivityLogModule\Activity\ActivityModel getFormModelName()
+ * @method \Pyro\ActivityLogModule\Activity\ActivityModel getFormModel()
+ */
 class ActivityFormBuilder extends FormBuilder
 {
 
