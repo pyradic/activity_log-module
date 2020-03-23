@@ -13,9 +13,9 @@ use Pyro\ActivityLogModule\Activity\Contract\ActivityInterface;
  *
  * @property int $id
  * @property int|null $sort_order
- * @property \Illuminate\Support\Carbon $created_at
+ * @property mixed $created_at
  * @property int|null $created_by_id
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property mixed $updated_at
  * @property int|null $updated_by_id
  * @property string $log_name
  * @property string $description
