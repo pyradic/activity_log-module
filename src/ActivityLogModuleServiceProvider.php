@@ -1,13 +1,19 @@
-<?php namespace Pyro\ActivityLogModule;
+<?php /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+
+namespace Pyro\ActivityLogModule;
 
 use Anomaly\Streams\Platform\Addon\AddonServiceProvider;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Routing\Router;
+use Laradic\Config\Repository;
+use Pyro\ActivityLogModule\Activity\ActivityCollection;
 use Pyro\ActivityLogModule\Activity\ActivityLogger;
 use Pyro\ActivityLogModule\Activity\ActivityLogStatus;
 use Pyro\ActivityLogModule\Activity\ActivityModel;
 use Pyro\ActivityLogModule\Activity\ActivityRepository;
 use Pyro\ActivityLogModule\Activity\Contract\ActivityInterface;
 use Pyro\ActivityLogModule\Activity\Contract\ActivityRepositoryInterface;
+use Pyro\ActivityLogModule\Activity\Export\ActivityExporter;
 use Pyro\ActivityLogModule\Http\Controller\Admin\ActivityController;
 
 class ActivityLogModuleServiceProvider extends AddonServiceProvider
@@ -33,9 +39,21 @@ class ActivityLogModuleServiceProvider extends AddonServiceProvider
 
     public function register()
     {
+        if($this->app->config instanceof \Laradic\Config\Repository){
+            /** @var \Laradic\Config\Parser $parser */
+            $parser = $this->app->config->getParser();
+            $parser->exclude('pyro.module.activity_log::config.export_filename_template');
+        }
         $this->app->extend(ActivityLogger::class, function (ActivityLogger $logger) {
             $logger->inLog(config('pyro.module.activity_log::config.default_log_name'));
             return $logger;
+        });
+        $this->app->bind(ActivityExporter::class, function (Application $app) {
+            $exporter = new ActivityExporter($app[ ActivityRepositoryInterface::class ], $app[ ActivityCollection::class ], $app[ 'files' ]);
+            $exporter->setDirectory(config('pyro.module.activity_log::config.export_directory'));
+            $exporter->setFileNameTemplate(config('pyro.module.activity_log::config.export_filename_template'));
+            $exporter->setFormat(config('pyro.module.activity_log::config.export_format'));
+            return $exporter;
         });
     }
 

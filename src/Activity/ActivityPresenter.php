@@ -7,8 +7,9 @@ use Pyro\Platform\Entry\EntryModel;
 /**
  * 
  *
- * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
  * @property \Pyro\ActivityLogModule\Activity\ActivityModel $object
+ * @method \Pyro\ActivityLogModule\Activity\ActivityModel getObject()
+ * @mixin \Pyro\ActivityLogModule\Activity\ActivityModel
  * @property \Anomaly\TextFieldType\TextFieldTypePresenter $log_name
  * @property \Anomaly\TextareaFieldType\TextareaFieldTypePresenter $description
  * @property \Anomaly\IntegerFieldType\IntegerFieldTypePresenter $subject_id

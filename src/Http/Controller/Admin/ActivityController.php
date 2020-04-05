@@ -1,5 +1,6 @@
 <?php namespace Pyro\ActivityLogModule\Http\Controller\Admin;
 
+use Pyro\ActivityLogModule\Activity\Contract\ActivityRepositoryInterface;
 use Pyro\ActivityLogModule\Activity\Form\ActivityFormBuilder;
 use Pyro\ActivityLogModule\Activity\Table\ActivityTableBuilder;
 use Anomaly\Streams\Platform\Http\Controller\AdminController;
@@ -39,5 +40,10 @@ class ActivityController extends AdminController
     public function edit(ActivityFormBuilder $form, $id)
     {
         return $form->render($id);
+    }
+
+    public function clean(ActivityRepositoryInterface $repository)
+    {
+
     }
 }
