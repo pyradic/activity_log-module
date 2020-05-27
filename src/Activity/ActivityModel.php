@@ -31,15 +31,17 @@ use Pyro\ActivityLogModule\Activity\Contract\ActivityInterface;
  * @property \Illuminate\Database\Eloquent\Model|\Eloquent $causer
  * @property \Anomaly\UsersModule\User\UserModel|null $createdBy
  * @property \Anomaly\UsersModule\User\UserModel|null $created_by
- * @property mixed $changes
+ * @property \Illuminate\Support\Collection $changes
  * @property mixed|null $raw
  * @property \Illuminate\Database\Eloquent\Model|\Eloquent $subject
  * @property \Anomaly\UsersModule\User\UserModel|null $updatedBy
  * @property \Anomaly\UsersModule\User\UserModel|null $updated_by
  * @property \Anomaly\Streams\Platform\Version\VersionCollection|\Anomaly\Streams\Platform\Version\VersionModel[] $versions
  * @property int|null $versions_count
+ * @method static \Pyro\ActivityLogModule\Activity\ActivityCollection|static[] all($columns = ['*'])
  * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel forSubject(\Illuminate\Database\Eloquent\Model $subject)
+ * @method static \Pyro\ActivityLogModule\Activity\ActivityCollection|static[] get($columns = ['*'])
  * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel inLog($logNames)
  * @method static \Pyro\ActivityLogModule\Activity\ActivityModel make($attributes=[])
  * @method static \Anomaly\Streams\Platform\Entry\EntryQueryBuilder|\Pyro\ActivityLogModule\Activity\ActivityModel newModelQuery()
@@ -75,6 +77,11 @@ class ActivityModel extends ActivityLogActivityEntryModel implements ActivityInt
 
     protected $enableLoggingModelsEvents = false;
 
+    public function getPropertiesAttribute()
+    {
+        return collect(json_decode($this->attributes[ 'properties' ], true));
+    }
+
     public function subject()
     {
         if (config('pyro.module.activity_log::config.subject_returns_soft_deleted_models')) {
@@ -96,11 +103,11 @@ class ActivityModel extends ActivityLogActivityEntryModel implements ActivityInt
 
     public function changes(): Collection
     {
-        if (! $this->properties instanceof Collection) {
+        if ( ! $this->properties instanceof Collection) {
             return new Collection();
         }
 
-        return $this->properties->only(['attributes', 'old']);
+        return $this->properties->only([ 'attributes', 'old' ]);
     }
 
     public function getChangesAttribute(): Collection
@@ -110,8 +117,8 @@ class ActivityModel extends ActivityLogActivityEntryModel implements ActivityInt
 
     public function scopeInLog(Builder $query, ...$logNames): Builder
     {
-        if (is_array($logNames[0])) {
-            $logNames = $logNames[0];
+        if (is_array($logNames[ 0 ])) {
+            $logNames = $logNames[ 0 ];
         }
 
         return $query->whereIn('log_name', $logNames);

@@ -11,6 +11,6 @@ class ActivityTableCleanHandler extends ActivityTableHandler
         $this->exporter->setActivities($this->getRepository()->findAll($this->selected));
         $exported = $this->exporter->export();
         resolve(Delete::class)->handle($this->builder, $exported->get('ids'));
-        $this->messages->success(trans('streams::message.delete_success', $exported));
+        $this->messages->success(trans('streams::message.delete_success', [ 'count' => $exported->count() ]));
     }
 }

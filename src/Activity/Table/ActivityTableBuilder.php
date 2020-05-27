@@ -3,10 +3,12 @@
 use Anomaly\Streams\Platform\Entry\Contract\EntryInterface;
 use Anomaly\Streams\Platform\Entry\EntryModel;
 use Anomaly\Streams\Platform\Entry\EntryQueryBuilder;
-use Anomaly\Streams\Platform\Ui\Table\Component\Action\Handler\Export;
+use Anomaly\Streams\Platform\Ui\Table\Component\View\Query\RecentlyCreatedQuery;
 use Anomaly\Streams\Platform\Ui\Table\TableBuilder;
 use Anomaly\UsersModule\User\Contract\UserInterface;
+use Illuminate\Support\Str;
 use Pyro\ActivityLogModule\Activity\ActivityModel;
+use Pyro\ActivityLogModule\Activity\Contract\Activity;
 
 /**
  * 
@@ -20,51 +22,61 @@ class ActivityTableBuilder extends TableBuilder
         'created_by_id',
     ];
 
+    protected $options = [
+        'class' => 'table table-pyro-activity',
+    ];
+
+    protected $assets = [
+        'styles.css' => [ 'pyro.module.activity_log::css/activity-table-builder.css' ],
+    ];
+
     protected $buttons = [
         'edit',
     ];
 
     protected $actions = [
         'delete',
-        'backup' => [
+        'backup'     => [
             'handler' => ActivityTableBackupHandler::class,
             'button'  => 'info',
             'icon'    => 'download',
             'text'    => 'Backup',
         ],
-        'clean' => [
+        'clean'      => [
             'handler' => ActivityTableCleanHandler::class,
             'button'  => 'warning',
             'icon'    => 'download',
             'text'    => 'Clean',
         ],
         'backup_all' => [
-            'handler' => ActivityTableBackupAllHandler::class,
-            'button'  => 'info',
-            'icon'    => 'download',
-            'text'    => 'Backup All',
-            'enabled' => true,
-            'disabled' => false
+            'handler'  => ActivityTableBackupAllHandler::class,
+            'button'   => 'info',
+            'icon'     => 'download',
+            'text'     => 'Backup All',
+            'enabled'  => true,
+            'disabled' => false,
         ],
-        'clean_all' => [
-            'handler' => ActivityTableCleanAllHandler::class,
-            'button'  => 'warning',
-            'icon'    => 'download',
-            'text'    => 'Clean All',
-            'enabled' => true,
-            'disabled' => false
+        'clean_all'  => [
+            'handler'  => ActivityTableCleanAllHandler::class,
+            'button'   => 'warning',
+            'icon'     => 'download',
+            'text'     => 'Clean All',
+            'enabled'  => true,
+            'disabled' => false,
         ],
     ];
 
-    protected $options = [];
-
-
     public function onReady(TableBuilder $builder)
     {
-
+        $this->on('queried', function (TableBuilder $builder, EntryQueryBuilder $query) {
+            $query->with([ 'subject', 'causer' ]);
+        });
         $builder->setViews([
-            'all',
+            'all'       => [
+                'query' => RecentlyCreatedQuery::class,
+            ],
             'by_user'   => [
+
                 'query'   => function (EntryQueryBuilder $query) {
                     $query->whereNotNull('created_by_id');
                     return;
@@ -89,70 +101,64 @@ class ActivityTableBuilder extends TableBuilder
             ],
         ]);
         $builder->setColumns([
-            'created_by' => [
-                'wrapper'     => function (EntryModel $entry) {
-                    if ($entry->created_by instanceof UserInterface) {
-                        return "<a href='/admin/users/edit/{$entry->created_by->id}'>{$entry->created_by->username}</a>";
+            'causer'      => [
+                'heading'     => 'Door',
+                'wrapper'     => function (Activity $entry) {
+                    if ($entry->causer instanceof UserInterface) {
+                        return $entry->causer->getPresenter()->link();
                     }
-                    return ' ';
+                    if ($entry->causer instanceof EntryInterface) {
+                        $titleColumn = $entry->causer->getStream()->getTitleColumn();
+                        return $entry->causer[ $titleColumn ];
+                    }
+                    return $entry->causer->getId();
                 },
                 'sort_column' => 'created_by_id',
                 'attributes'  => [
                     'style' => 'width: 150px',
                 ],
             ],
-            'created_at' => [
+//            'created_by'  => [
+//                'wrapper'     => function (EntryModel $entry) {
+//                    if ($entry->created_by instanceof UserInterface) {
+//                        return $entry->createdBy->getPresenter()->link();
+//                        return "<a href='/admin/users/edit/{$entry->created_by->id}'>{$entry->created_by->username}</a>";
+//                    }
+//                    return ' ';
+//                },
+//                'sort_column' => 'created_by_id',
+//                'attributes'  => [
+//                    'style' => 'width: 150px',
+//                ],
+//            ],
+            'subject'     => [
+                'attributes' => [ 'width' => '300px' ],
+                'value'      => function (Activity $entry) {
+                    if ($entry->properties->has('subject')) {
+                        return $entry->properties[ 'subject' ];
+                    }
+                    if ($entry->subject instanceof EntryInterface) {
+                        $stream      = $entry->subject->getStream();
+                        $titleColumn = $stream->getTitleColumn();
+                        $streamName  = trans($stream->getName());
+                        $subjectName = Str::truncate($entry->subject[ $titleColumn ], 27, '..');
+                        return "{$streamName} :: {$subjectName}";
+                    }
+                },
+            ],
+            'description' => [
+                'is_safe'     => true,
+                'wrapper'     => function (ActivityModel $entry) {
+                    $entry->loadMissing([ 'subject', 'causer' ]);
+                    return $entry->description;
+                },
+                'sort_column' => 'subject_id',
+            ],
+            'created_at'  => [
                 'value'      => 'entry.created_at.format("d-m-Y h:i:s")',
                 'attributes' => [
                     'style' => 'width: 150px',
                 ],
-            ],
-//            'causer',//=> [ 'value' => '{entry.causerTitle' ],
-//            'causer'     => [
-//                'wrapper'     => function (EntryModel $entry) use ($builder) {
-//                    $value = ' ';
-//                    if ($entry->causer instanceof EntryModel && $titleColumn = $entry->causer->getStream()->getTitleColumn()) {
-//                        $causer    = $entry->causer;
-//                        $stream    = $causer->getStream();
-//                        $name      = $stream->getName();
-//                        $namespace = $stream->getNamespace();
-//                        $title     = $causer->getAttribute($titleColumn);
-//                        $value     = trans()->has($name) ? trans($name) : $namespace;
-//                        $value     .= ' - ' . $title;
-//                    }
-//                    return $value;
-//                },
-//                'sort_column' => 'causer_id',
-//            ],
-//            'subject',//=> [ 'value' => 'entry.subjectTitle' ],
-            'subject'    => [
-                'wrapper'     => function (ActivityModel $entry) {
-                    $value = ' ';
-                    if ($entry->description) {
-                        $value = $entry->description;
-                    }
-
-                    $subject = null;
-                    if ($entry->subject instanceof EntryInterface) {
-                        $subject = $entry->subject;
-                    } elseif(class_exists($entry->subject_type)) {
-                        $class = $entry->subject_type;
-                        $subject = new $class;
-                    }
-                    if($subject){
-                        $stream    = $subject->getStream();
-                        $name      = $stream->getName();
-                        $namespace = $stream->getNamespace();
-                        $value     .= ': ';
-                        $value     .= trans()->has($name) ? trans($name) : $namespace;
-
-                        if($titleColumn = $subject->getStream()->getTitleColumn()) {
-                            $value     .= ' - ' . $subject->getAttribute($titleColumn);
-                        }
-                    }
-                    return $value;
-                },
-                'sort_column' => 'subject_id',
             ],
         ]);
     }

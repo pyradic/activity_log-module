@@ -34,7 +34,7 @@ class PyroModuleActivityLogCreateActivityStream extends Migration
      * @var array
      */
     protected $assignments = [
-        'log_name'=> [ 'required' => true, ],
+        'log_name'    => [ 'required' => true, ],
         'description' => [ 'required' => true, ],
         'subject_id',
         'subject_type',
