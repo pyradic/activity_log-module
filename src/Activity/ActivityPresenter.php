@@ -2,10 +2,10 @@
 
 use Anomaly\Streams\Platform\Entry\EntryPresenter;
 use Anomaly\UsersModule\User\Contract\UserInterface;
-use Pyro\Platform\Entry\EntryModel;
+use Crvs\Platform\Entry\EntryModel;
 
 /**
- * 
+ *
  *
  * @property \Pyro\ActivityLogModule\Activity\ActivityModel $object
  * @method \Pyro\ActivityLogModule\Activity\ActivityModel getObject()
@@ -45,7 +45,7 @@ class ActivityPresenter extends EntryPresenter
         $type = (string)$field;
         if ($type && class_exists($type) && in_array(EntryModel::class, class_parents($type))) {
 
-            /** @var \Pyro\Platform\Entry\EntryModel $s */
+            /** @var \Crvs\Platform\Entry\EntryModel $s */
             $s = new $type;
             /** @var  $stream */
             $stream = $s->getStream();
