@@ -5,7 +5,7 @@ use Anomaly\UsersModule\User\Contract\UserInterface;
 use Crvs\Platform\Entry\EntryModel;
 
 /**
- *
+ * 
  *
  * @property \Pyro\ActivityLogModule\Activity\ActivityModel $object
  * @method \Pyro\ActivityLogModule\Activity\ActivityModel getObject()
