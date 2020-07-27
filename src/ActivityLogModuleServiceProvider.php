@@ -35,7 +35,7 @@ class ActivityLogModuleServiceProvider extends AddonServiceProvider
 
     protected $routes = [
         '/admin/activity_log'           => [ 'as' => 'pyro.module.activity_log::activity.index', 'uses' => ActivityController::class . '@index' ],
-        '/admin/activity_log/create'    => [ 'as' => 'pyroModuleActivityLogActivityCreate                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ', 'uses' => ActivityController::class . '@create' ],
+//        '/admin/activity_log/create'    => [ 'as' => 'pyro.module.activity_log::activity.create', 'uses' => ActivityController::class . '@create' ],
         '/admin/activity_log/edit/{id}' => [ 'as' => 'pyro.module.activity_log::activity.edit', 'uses' => ActivityController::class . '@edit' ],
     ];
 

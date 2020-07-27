@@ -1,7 +1,6 @@
 <?php namespace Pyro\ActivityLogModule\Activity\Table;
 
 use Anomaly\Streams\Platform\Entry\Contract\EntryInterface;
-use Anomaly\Streams\Platform\Entry\EntryModel;
 use Anomaly\Streams\Platform\Entry\EntryQueryBuilder;
 use Anomaly\Streams\Platform\Ui\Table\Component\View\Query\RecentlyCreatedQuery;
 use Anomaly\Streams\Platform\Ui\Table\TableBuilder;
@@ -11,7 +10,7 @@ use Pyro\ActivityLogModule\Activity\ActivityModel;
 use Pyro\ActivityLogModule\Activity\Contract\Activity;
 
 /**
- * 
+ *
  *
  */
 class ActivityTableBuilder extends TableBuilder
@@ -101,6 +100,44 @@ class ActivityTableBuilder extends TableBuilder
             ],
         ]);
         $builder->setColumns([
+//            'created_by'  => [
+//                'wrapper'     => function (EntryModel $entry) {
+//                    if ($entry->created_by instanceof UserInterface) {
+//                        return $entry->createdBy->getPresenter()->link();
+//                        return "<a href='/admin/users/edit/{$entry->created_by->id}'>{$entry->created_by->username}</a>";
+//                    }
+//                    return ' ';
+//                },
+//                'sort_column' => 'created_by_id',
+//                'attributes'  => [
+//                    'style' => 'width: 150px',
+//                ],
+//            ],
+            'subject'     => [
+                'heading'    => 'Voor',
+                'attributes' => [ 'width' => '300px' ],
+                'value'      => function (Activity $entry) {
+                    if ($entry->properties->has('subject')) {
+                        return $entry->properties[ 'subject' ];
+                    }
+                    if ($entry->subject instanceof EntryInterface) {
+                        $stream      = $entry->subject->getStream();
+                        $titleColumn = $stream->getTitleColumn();
+                        $streamName  = trans($stream->getName());
+                        $subjectName = Str::truncate($entry->subject[ $titleColumn ], 27, '..');
+                        return "{$streamName} :: {$subjectName}";
+                    }
+                },
+            ],
+            'description' => [
+                'heading'     => 'Actie',
+                'is_safe'     => true,
+                'wrapper'     => function (ActivityModel $entry) {
+                    $entry->loadMissing([ 'subject', 'causer' ]);
+                    return $entry->description;
+                },
+                'sort_column' => 'subject_id',
+            ],
             'causer'      => [
                 'heading'     => 'Door',
                 'wrapper'     => function (Activity $entry) {
@@ -118,43 +155,8 @@ class ActivityTableBuilder extends TableBuilder
                     'style' => 'width: 150px',
                 ],
             ],
-//            'created_by'  => [
-//                'wrapper'     => function (EntryModel $entry) {
-//                    if ($entry->created_by instanceof UserInterface) {
-//                        return $entry->createdBy->getPresenter()->link();
-//                        return "<a href='/admin/users/edit/{$entry->created_by->id}'>{$entry->created_by->username}</a>";
-//                    }
-//                    return ' ';
-//                },
-//                'sort_column' => 'created_by_id',
-//                'attributes'  => [
-//                    'style' => 'width: 150px',
-//                ],
-//            ],
-            'subject'     => [
-                'attributes' => [ 'width' => '300px' ],
-                'value'      => function (Activity $entry) {
-                    if ($entry->properties->has('subject')) {
-                        return $entry->properties[ 'subject' ];
-                    }
-                    if ($entry->subject instanceof EntryInterface) {
-                        $stream      = $entry->subject->getStream();
-                        $titleColumn = $stream->getTitleColumn();
-                        $streamName  = trans($stream->getName());
-                        $subjectName = Str::truncate($entry->subject[ $titleColumn ], 27, '..');
-                        return "{$streamName} :: {$subjectName}";
-                    }
-                },
-            ],
-            'description' => [
-                'is_safe'     => true,
-                'wrapper'     => function (ActivityModel $entry) {
-                    $entry->loadMissing([ 'subject', 'causer' ]);
-                    return $entry->description;
-                },
-                'sort_column' => 'subject_id',
-            ],
             'created_at'  => [
+                'heading'    => 'Uitgevoerd op',
                 'value'      => 'entry.created_at.format("d-m-Y h:i:s")',
                 'attributes' => [
                     'style' => 'width: 150px',
