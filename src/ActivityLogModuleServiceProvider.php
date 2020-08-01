@@ -4,6 +4,7 @@ namespace Pyro\ActivityLogModule;
 
 use Anomaly\Streams\Platform\Addon\AddonCollection;
 use Anomaly\Streams\Platform\Addon\AddonServiceProvider;
+use Crvs\Platform\Entry\Command\AddTraitsToEntryModel;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
@@ -16,6 +17,8 @@ use Pyro\ActivityLogModule\Activity\ActivityRepository;
 use Pyro\ActivityLogModule\Activity\Contract\ActivityInterface;
 use Pyro\ActivityLogModule\Activity\Contract\ActivityRepositoryInterface;
 use Pyro\ActivityLogModule\Activity\Export\ActivityExporter;
+use Pyro\ActivityLogModule\Activity\Traits\CausesActivity;
+use Pyro\ActivityLogModule\Activity\Traits\LogsActivity;
 use Pyro\ActivityLogModule\Http\Controller\Admin\ActivityController;
 
 class ActivityLogModuleServiceProvider extends AddonServiceProvider
@@ -73,6 +76,10 @@ class ActivityLogModuleServiceProvider extends AddonServiceProvider
             $exporter->setFormat(config('pyro.module.activity_log::config.export_format'));
             return $exporter;
         });
+        dispatch_now(new AddTraitsToEntryModel([
+            CausesActivity::class,
+            LogsActivity::class,
+        ]));
     }
 
     public function boot()
