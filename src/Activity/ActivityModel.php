@@ -11,58 +11,53 @@ use Pyro\ActivityLogModule\Activity\Contract\ActivityInterface;
 /**
  * Pyro\ActivityLogModule\Activity\ActivityModel
  *
- * @property int $id
- * @property int|null $sort_order
- * @property mixed $created_at
- * @property int|null $created_by_id
- * @property mixed $updated_at
- * @property int|null $updated_by_id
- * @property string $log_name
- * @property string $description
- * @property int|null $subject_id
- * @property string|null $subject_type
- * @property int|null $causer_id
- * @property string|null $causer_type
- * @property \Illuminate\Support\Collection|null $properties
- * @property \Pyro\ActivityLogModule\Activity\ActivityCollection|\Pyro\ActivityLogModule\Activity\ActivityModel[] $actions
- * @property int|null $actions_count
- * @property \Pyro\ActivityLogModule\Activity\ActivityCollection|\Pyro\ActivityLogModule\Activity\ActivityModel[] $activityLogs
- * @property int|null $activity_logs_count
- * @property \Illuminate\Database\Eloquent\Model|\Eloquent $causer
- * @property \Anomaly\UsersModule\User\UserModel|null $createdBy
- * @property \Anomaly\UsersModule\User\UserModel|null $created_by
- * @property \Illuminate\Support\Collection $changes
- * @property mixed|null $raw
- * @property \Illuminate\Database\Eloquent\Model|\Eloquent $subject
- * @property \Anomaly\UsersModule\User\UserModel|null $updatedBy
- * @property \Anomaly\UsersModule\User\UserModel|null $updated_by
+ * @property int                                                                                                  $id
+ * @property int|null                                                                                             $sort_order
+ * @property mixed                                                                                                $created_at
+ * @property int|null                                                                                             $created_by_id
+ * @property mixed                                                                                                $updated_at
+ * @property int|null                                                                                             $updated_by_id
+ * @property string                                                                                               $log_name
+ * @property string                                                                                               $description
+ * @property int|null                                                                                             $subject_id
+ * @property string|null                                                                                          $subject_type
+ * @property int|null                                                                                             $causer_id
+ * @property string|null                                                                                          $causer_type
+ * @property Collection|null                                                                                      $properties
+ * @property Model|\Eloquent                                                                                      $causer
+ * @property \Anomaly\UsersModule\User\UserModel|null                                                             $createdBy
+ * @property \Anomaly\UsersModule\User\UserModel|null                                                             $created_by
+ * @property Collection                                                                                           $changes
+ * @property mixed|null                                                                                           $raw
+ * @property Model|\Eloquent                                                                                      $subject
+ * @property \Anomaly\UsersModule\User\UserModel|null                                                             $updatedBy
+ * @property \Anomaly\UsersModule\User\UserModel|null                                                             $updated_by
  * @property \Anomaly\Streams\Platform\Version\VersionCollection|\Anomaly\Streams\Platform\Version\VersionModel[] $versions
- * @property int|null $versions_count
- * @method static \Pyro\ActivityLogModule\Activity\ActivityCollection|static[] all($columns = ['*'])
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel causedBy(\Illuminate\Database\Eloquent\Model $causer)
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel forSubject(\Illuminate\Database\Eloquent\Model $subject)
- * @method static \Pyro\ActivityLogModule\Activity\ActivityCollection|static[] get($columns = ['*'])
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel inLog($logNames)
- * @method static \Pyro\ActivityLogModule\Activity\ActivityModel make($attributes=[])
- * @method static \Anomaly\Streams\Platform\Entry\EntryQueryBuilder|\Pyro\ActivityLogModule\Activity\ActivityModel newModelQuery()
- * @method static \Anomaly\Streams\Platform\Entry\EntryQueryBuilder|\Pyro\ActivityLogModule\Activity\ActivityModel newQuery()
- * @method static \Anomaly\Streams\Platform\Entry\EntryQueryBuilder|\Pyro\ActivityLogModule\Activity\ActivityModel query()
- * @method static \Illuminate\Database\Eloquent\Builder|\Anomaly\Streams\Platform\Entry\EntryModel sorted($direction = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|\Anomaly\Streams\Platform\Model\EloquentModel translated()
- * @method static \Illuminate\Database\Eloquent\Builder|\Anomaly\Streams\Platform\Model\EloquentModel translatedIn($locale)
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereCauserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereCauserType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereCreatedById($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereLogName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereProperties($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereSortOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereSubjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereSubjectType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Pyro\ActivityLogModule\Activity\ActivityModel whereUpdatedById($value)
+ * @method static \Pyro\ActivityLogModule\Activity\ActivityCollection|static[] all($columns = [ '*' ])
+ * @method static Builder|ActivityModel causedBy(\Illuminate\Database\Eloquent\Model $causer)
+ * @method static Builder|ActivityModel forSubject(\Illuminate\Database\Eloquent\Model $subject)
+ * @method static \Pyro\ActivityLogModule\Activity\ActivityCollection|static[] get($columns = [ '*' ])
+ * @method static Builder|ActivityModel inLog($logNames)
+ * @method static \Pyro\ActivityLogModule\Activity\ActivityModel make($attributes = [])
+ * @method static \Anomaly\Streams\Platform\Entry\EntryQueryBuilder|ActivityModel newModelQuery()
+ * @method static \Anomaly\Streams\Platform\Entry\EntryQueryBuilder|ActivityModel newQuery()
+ * @method static \Anomaly\Streams\Platform\Entry\EntryQueryBuilder|ActivityModel query()
+ * @method static Builder|EntryModel sorted($direction = 'asc')
+ * @method static Builder|EloquentModel translated()
+ * @method static Builder|EloquentModel translatedIn($locale)
+ * @method static Builder|ActivityModel whereCauserId($value)
+ * @method static Builder|ActivityModel whereCauserType($value)
+ * @method static Builder|ActivityModel whereCreatedAt($value)
+ * @method static Builder|ActivityModel whereCreatedById($value)
+ * @method static Builder|ActivityModel whereDescription($value)
+ * @method static Builder|ActivityModel whereId($value)
+ * @method static Builder|ActivityModel whereLogName($value)
+ * @method static Builder|ActivityModel whereProperties($value)
+ * @method static Builder|ActivityModel whereSortOrder($value)
+ * @method static Builder|ActivityModel whereSubjectId($value)
+ * @method static Builder|ActivityModel whereSubjectType($value)
+ * @method static Builder|ActivityModel whereUpdatedAt($value)
+ * @method static Builder|ActivityModel whereUpdatedById($value)
  * @mixin \Eloquent
  * @method \Pyro\ActivityLogModule\Activity\ActivityPresenter getPresenter()
  * @method \Pyro\ActivityLogModule\Activity\ActivityCollection newCollection()
