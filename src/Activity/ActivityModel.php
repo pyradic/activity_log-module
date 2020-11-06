@@ -24,6 +24,8 @@ use Pyro\ActivityLogModule\Activity\Contract\ActivityInterface;
  * @property int|null                                                                                             $causer_id
  * @property string|null                                                                                          $causer_type
  * @property Collection|null                                                                                      $properties
+ * @property \Pyro\ActivityLogModule\Activity\ActivityCollection|ActivityModel[]                                  $actions
+ * @property \Pyro\ActivityLogModule\Activity\ActivityCollection|ActivityModel[]                                  $activityLogs
  * @property Model|\Eloquent                                                                                      $causer
  * @property \Anomaly\UsersModule\User\UserModel|null                                                             $createdBy
  * @property \Anomaly\UsersModule\User\UserModel|null                                                             $created_by
